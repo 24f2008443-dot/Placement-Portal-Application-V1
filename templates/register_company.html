@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Company Registration</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.company_name.label }} {{ form.company_name(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.hr_contact.label }} {{ form.hr_contact(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.website.label }} {{ form.website(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.email.label }} {{ form.email(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.password.label }} {{ form.password(class_='form-control') }}</div>
+    <button class="btn btn-success">Register Company</button>
+  </form>
+{% endblock %}

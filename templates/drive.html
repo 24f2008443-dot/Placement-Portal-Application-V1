@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>{{ drive.job_title }}</h2>
+  <p>{{ drive.job_description }}</p>
+  <p>Eligibility: {{ drive.eligibility }}</p>
+  <p>Status: {{ drive.status }}</p>
+  {% if current_user.is_authenticated and current_user.role=='student' %}
+    {% if existing %}
+      <div class="alert alert-info">You have already applied. Status: {{ existing.status }}</div>
+    {% else %}
+      <form method="post">{{ form.hidden_tag() }}<button class="btn btn-primary">Apply</button></form>
+    {% endif %}
+  {% else %}
+    <p>Please login as student to apply.</p>
+  {% endif %}
+{% endblock %}

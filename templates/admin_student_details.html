@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Student Details</h2>
+    <a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Back to Admin</a>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">{{ user.name }}</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Role:</strong> <span class="badge bg-secondary">{{ user.role }}</span></p>
+          <p><strong>Account Status:</strong> 
+            {% if user.blacklisted %}
+              <span class="badge bg-danger">Blacklisted</span>
+            {% elif not user.active %}
+              <span class="badge bg-warning">Inactive</span>
+            {% else %}
+              <span class="badge bg-success">Active</span>
+            {% endif %}
+          </p>
+          {% if profile %}
+            <hr>
+            <h5>Profile Information</h5>
+            <p><strong>Phone:</strong> {{ profile.phone or 'Not provided' }}</p>
+            <p><strong>College:</strong> {{ profile.college or 'Not provided' }}</p>
+            <p><strong>Branch:</strong> {{ profile.branch or 'Not provided' }}</p>
+            <p><strong>CGPA:</strong> {{ profile.cgpa or 'Not provided' }}</p>
+            {% if profile.resume_filename %}
+              <p><strong>Resume:</strong> <a href="{{ url_for('uploaded_file', filename=profile.resume_filename) }}" target="_blank">Download</a></p>
+            {% else %}
+              <p><strong>Resume:</strong> <span class="text-muted">Not uploaded</span></p>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Applications ({{ applications|length }})</h5>
+        </div>
+        <table class="table table-sm mb-0">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+              <tr>
+                <td>{{ app.drive.job_title }}</td>
+                <td>{{ app.drive.company.company_name }}</td>
+                <td><span class="badge bg-secondary">{{ app.status }}</span></td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3" class="text-center">No applications</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Actions</h5>
+          {% if not user.blacklisted %}
+            <a class="btn btn-danger btn-sm w-100" href="{{ url_for('blacklist_user', user_id=user.id) }}">Blacklist Student</a>
+          {% else %}
+            <p class="text-center text-muted small">Student is blacklisted</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

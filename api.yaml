@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Placement Portal API
+  version: "1.0"
+  description: |
+    Simple JSON-based API for the placement portal.  
+    Endpoints support login, listing drives, applying to a drive and admin summaries.
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/login:
+    post:
+      summary: Authenticate user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        '200':
+          description: Authentication succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  role:
+                    type: string
+                  name:
+                    type: string
+        '400':
+          description: Missing fields
+        '401':
+          description: Invalid credentials
+  /api/drives:
+    get:
+      summary: Get approved placement drives
+      responses:
+        '200':
+          description: Array of drives
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    company:
+                      type: string
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    salary:
+                      type: string
+                    location:
+                      type: string
+                    deadline:
+                      type: string
+  /api/apply:
+    post:
+      summary: Submit application for a drive
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                drive_id:
+                  type: integer
+              required: [drive_id]
+      responses:
+        '200':
+          description: Application created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  application_id:
+                    type: integer
+        '400':
+          description: Invalid or missing drive
+        '409':
+          description: Already applied
+  /api/summary:
+    get:
+      summary: Dashboard summary (admin only)
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Counts of entities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  students:
+                    type: integer
+                  companies:
+                    type: integer
+                  drives:
+                    type: integer
+                  applications:
+                    type: integer
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session

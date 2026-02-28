@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Create Drive</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.job_title.label }} {{ form.job_title(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.job_description.label }} {{ form.job_description(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.eligibility.label }} {{ form.eligibility(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.application_deadline.label }} {{ form.application_deadline(class_='form-control') }}</div>
+    <button class="btn btn-success">Create</button>
+  </form>
+{% endblock %}

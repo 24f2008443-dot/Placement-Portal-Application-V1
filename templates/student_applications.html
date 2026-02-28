@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>My Applications</h2>
+    <a class="btn btn-primary" href="{{ url_for('student_dashboard') }}">Back to Drives</a>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Sl. No.</th>
+        <th>Job Title</th>
+        <th>Company</th>
+        <th>Applied Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for app in applications %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ app.drive.job_title }}</td>
+          <td>{{ app.drive.company.company_name }}</td>
+          <td>{{ app.applied_at.strftime('%d-%m-%Y') }}</td>
+          <td>
+            {% if app.status == 'Applied' %}
+              <span class="badge bg-info">{{ app.status }}</span>
+            {% elif app.status == 'Shortlisted' %}
+              <span class="badge bg-warning">{{ app.status }}</span>
+            {% elif app.status == 'Selected' %}
+              <span class="badge bg-success">{{ app.status }}</span>
+            {% else %}
+              <span class="badge bg-danger">{{ app.status }}</span>
+            {% endif %}
+          </td>
+          <td><a class="btn btn-sm btn-info" href="{{ url_for('view_application_detail', app_id=app.id) }}">View</a></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="text-center">No applications yet</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

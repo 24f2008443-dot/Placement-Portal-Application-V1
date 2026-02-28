@@ -1,0 +1,42 @@
+body { background: #f8f9fa; }
+.card-job { border-left: 4px solid #0d6efd; }
+.navbar-brand i { font-size: 1.2rem; }
+.card-title { font-weight: 600; }
+.footer { padding: 2rem 0; text-align: center; color: #6c757d; }
+
+/* Hover and avatar styles */
+.list-group-item {
+  transition: transform 0.2s, background-color 0.2s;
+}
+.list-group-item:hover {
+  background-color: #e9ecef;
+  transform: scale(1.01);
+}
+.card {
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.02);
+}
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+/* Back-to-top button */
+#backToTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  z-index: 100;
+}
+

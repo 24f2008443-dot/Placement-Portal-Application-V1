@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Edit Profile</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.name.label }}
+          {{ form.name(class_='form-control') }}
+          {% if form.name.errors %}<div class="alert alert-danger small">{{ form.name.errors[0] }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.phone.label }}
+          {{ form.phone(class_='form-control') }}
+          {% if form.phone.errors %}<div class="alert alert-danger small">{{ form.phone.errors[0] }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.college.label }}
+          {{ form.college(class_='form-control') }}
+          {% if form.college.errors %}<div class="alert alert-danger small">{{ form.college.errors[0] }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.branch.label }}
+          {{ form.branch(class_='form-control') }}
+          {% if form.branch.errors %}<div class="alert alert-danger small">{{ form.branch.errors[0] }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.cgpa.label }}
+          {{ form.cgpa(class_='form-control') }}
+          {% if form.cgpa.errors %}<div class="alert alert-danger small">{{ form.cgpa.errors[0] }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+          {{ form.resume.label }}
+          {{ form.resume(class_='form-control') }}
+          <small class="text-muted">PDF files only, max 16MB</small>
+          {% if form.resume.errors %}<div class="alert alert-danger small">{{ form.resume.errors[0] }}</div>{% endif %}
+        </div>
+        <button class="btn btn-success">Update Profile</button>
+        <a class="btn btn-secondary" href="{{ url_for('student_profile') }}">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

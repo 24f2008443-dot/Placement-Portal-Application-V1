@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Company Details</h2>
+    <a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Back to Admin</a>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">{{ profile.company_name }}</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>HR Contact:</strong> {{ profile.hr_contact or 'Not provided' }}</p>
+          <p><strong>Website:</strong> 
+            {% if profile.website %}
+              <a href="{{ profile.website }}" target="_blank">{{ profile.website }}</a>
+            {% else %}
+              Not provided
+            {% endif %}
+          </p>
+          <p><strong>Approval Status:</strong> 
+            {% if profile.approved %}
+              <span class="badge bg-success">Approved</span>
+            {% else %}
+              <span class="badge bg-warning">Pending Approval</span>
+            {% endif %}
+          </p>
+          <p><strong>Account Status:</strong> 
+            {% if profile.blacklisted %}
+              <span class="badge bg-danger">Blacklisted</span>
+            {% else %}
+              <span class="badge bg-success">Active</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Drives ({{ drives|length }})</h5>
+        </div>
+        <table class="table table-sm mb-0">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Status</th>
+              <th>Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in drives %}
+              <tr>
+                <td>{{ d.job_title }}</td>
+                <td><span class="badge bg-secondary">{{ d.status }}</span></td>
+                <td>{{ d.application_deadline or 'N/A' }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3" class="text-center">No drives</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Actions</h5>
+          {% if not profile.approved %}
+            <a class="btn btn-success btn-sm w-100 mb-2" href="{{ url_for('approve_company', company_id=profile.id) }}">Approve Company</a>
+            <a class="btn btn-danger btn-sm w-100" href="{{ url_for('reject_company', company_id=profile.id) }}">Reject Company</a>
+          {% else %}
+            {% if not profile.blacklisted %}
+              <button class="btn btn-warning btn-sm w-100" disabled>Company Approved</button>
+            {% else %}
+              <p class="text-center text-muted small">Company is blacklisted</p>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

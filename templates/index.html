@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!-- hero carousel -->
+  <div id="heroCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="d-flex align-items-center justify-content-center" style="height:200px;background:#0d6efd;color:#fff;">
+          <div class="text-center">
+            <h3>Discover Opportunities</h3>
+            <p>Browse approved placement drives from top companies.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex align-items-center justify-content-center" style="height:200px;background:#198754;color:#fff;">
+          <div class="text-center">
+            <h3>Upload Your Resume</h3>
+            <p>Maintain your profile and share your resume securely.</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex align-items-center justify-content-center" style="height:200px;background:#ffc107;color:#212529;">
+          <div class="text-center">
+            <h3>Apply in One Click</h3>
+            <p>Submit applications and track their status easily.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3">Approved Drives</h1>
+    <div>
+      {% if current_user.is_authenticated and current_user.role=='student' %}
+        <a class="btn btn-outline-primary" href="{{ url_for('student_dashboard') }}">My Dashboard</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    {% for drive in drives %}
+      <div class="col-md-4">
+        <div class="card mb-3 card-job shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ drive.job_title }}</h5>
+            <p class="text-muted small">Company: {{ drive.company.company_name }}</p>
+            <p class="card-text">{{ (drive.job_description or '')[:140] }}{% if drive.job_description and drive.job_description|length > 140 %}...{% endif %}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <a class="btn btn-primary btn-sm" href="{{ url_for('view_drive', drive_id=drive.id) }}">View</a>
+              <small class="text-muted">Deadline: {{ drive.application_deadline or 'N/A' }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p>No approved drives yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

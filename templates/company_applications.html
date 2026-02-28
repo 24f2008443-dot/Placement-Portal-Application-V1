@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h3>{{ drive.job_title }}</h3>
+      <p class="text-muted small">{{ drive.location or 'Location N/A' }} | {{ drive.salary or 'Salary N/A' }} | Deadline: {{ drive.application_deadline or 'N/A' }}</p>
+    </div>
+    <a class="btn btn-secondary" href="{{ url_for('company_dashboard') }}">Back</a>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr><th>Student</th><th>Applied At</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for a in applications %}
+        <tr>
+          <td>{{ a.student.name }}<br><small>{{ a.student.email }}</small></td>
+          <td>{{ a.applied_at }}</td>
+          <td><span class="badge bg-secondary">{{ a.status }}</span></td>
+          <td>
+            <a class="btn btn-sm btn-success" href="{{ url_for('update_application_status', app_id=a.id, status='Shortlisted') }}">Shortlist</a>
+            <a class="btn btn-sm btn-primary" href="{{ url_for('update_application_status', app_id=a.id, status='Selected') }}">Select</a>
+            <a class="btn btn-sm btn-danger" href="{{ url_for('update_application_status', app_id=a.id, status='Rejected') }}">Reject</a>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4">No applications yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

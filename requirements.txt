@@ -1,0 +1,5 @@
+Flask>=2.0
+Flask-Login
+Flask-WTF
+Flask-SQLAlchemy
+email-validator

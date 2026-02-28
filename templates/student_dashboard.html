@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Student Dashboard</h2>
+  <div class="mb-3">
+    <h4 class="h5">Available Drives</h4>
+  </div>
+  <ul class="list-group">
+    {% for d in drives %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div style="flex: 1;">
+          <strong>{{ d.job_title }}</strong><br>
+          <small class="text-muted">{{ d.company.company_name }} | {{ d.location or 'Location N/A' }} | {{ d.salary or 'Salary N/A' }}</small><br>
+          <small class="text-muted">Deadline: {{ d.application_deadline or 'N/A' }}</small>
+        </div>
+        {% if d.id in applied_ids %}
+          <span class="badge bg-info">Applied</span>
+        {% else %}
+          <a class="btn btn-sm btn-primary" href="{{ url_for('view_drive', drive_id=d.id) }}">View</a>
+        {% endif %}
+      </li>
+    {% else %}
+      <li class="list-group-item">No drives available</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
